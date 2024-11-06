@@ -9,6 +9,7 @@ import { FaAngleDown } from "react-icons/fa6";
 
 const EditEmployee = () => {
   const [employees, setEmployees] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [projects, setProjects] = useState([]);
   const [loader, setLoader] = useState(false);
@@ -18,20 +19,6 @@ const EditEmployee = () => {
   const navigate = useNavigate();
   const params = useParams();
   const { id } = params;
-  const employeeType = [
-    {
-      id: 1,
-      type: "auto",
-    },
-    {
-      id: 2,
-      type: "lorry",
-    },
-    {
-      id: 3,
-      type: "truck",
-    },
-  ];
 
   const initialState = {
     name: "",
@@ -44,19 +31,27 @@ const EditEmployee = () => {
   const [data, setData] = useState(initialState);
   useEffect(() => {
     fetchOldData();
+    fetchCategory();
   }, []);
-
+  const fetchCategory = async () => {
+    const res = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/api/getAllCategoryWithoutPagination`
+    );
+    const response = await res.json();
+    if (response.success) {
+      setCategories(response.result);
+    }
+  };
   const fetchOldData = async () => {
     const res = await fetch(
       `${import.meta.env.VITE_BACKEND_URL}/api/getSingleEmployee`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({id}),
+        body: JSON.stringify({ id }),
       }
     );
     const response = await res.json();
-    console.log(response)
     if (response.success) {
       setData((prevState) => ({
         ...prevState,
@@ -174,7 +169,7 @@ const EditEmployee = () => {
     }
     try {
       setLoader(true);
-      const updateData = {id, data}
+      const updateData = { id, data };
       const res = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/api/updateEmployee`,
         {
@@ -184,7 +179,6 @@ const EditEmployee = () => {
         }
       );
       const response = await res.json();
-      console.log(response);
       if (response.success) {
         toast.success("Employee is updated Successfully!", {
           position: "top-right",
@@ -321,14 +315,14 @@ const EditEmployee = () => {
                   className="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-black block w-full p-2.5 "
                 >
                   <option value="">Select an Employee Type.</option>
-                  {employeeType.map((option) => {
+                  {categories.map((option) => {
                     return (
                       <option
-                        key={option.id}
-                        value={option.type}
+                        key={option._id}
+                        value={option._id}
                         className=" bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-black block w-full p-2.5 "
                       >
-                        {option.type}
+                        {option.role}
                       </option>
                     );
                   })}
@@ -350,6 +344,7 @@ const EditEmployee = () => {
                   id="licenseNumber"
                   className="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-black block w-full p-2.5 "
                   placeholder="Enter license number"
+                  required
                 />
               </div>
               <div className="">
@@ -357,8 +352,7 @@ const EditEmployee = () => {
                   htmlFor="experienceYears"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                 >
-                  Experience in Years{" "}
-                  <span className="text-red-900 text-lg ">&#x2a;</span>
+                  Experience in Years
                 </label>
                 <input
                   name="experienceYears"

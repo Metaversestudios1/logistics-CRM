@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaAngleDown, FaAngleRight } from "react-icons/fa6";
 import { NavLink } from "react-router-dom";
 import { AiOutlineProduct } from "react-icons/ai";
-
+import { CiCircleList } from "react-icons/ci";
 const Sidebar = ({ sidebar, toggleSideBar }) => {
   const [openSubMenu, setOpenSubMenu] = useState({
     client: false,
@@ -20,7 +20,7 @@ const Sidebar = ({ sidebar, toggleSideBar }) => {
   return (
     <>
       <div
-        className={`h-full bg-[#4B49AC] flex-col w-[240px] overflow-y-auto overflow-x-hidden ${
+        className={`h-full bg-[#4B49AC] flex-col w-[260px] overflow-y-auto overflow-x-hidden ${
           sidebar ? "hidden" : "flex"
         } md:block`}
       >
@@ -76,6 +76,7 @@ const Sidebar = ({ sidebar, toggleSideBar }) => {
               <li
                 className=" hover:scale-105 transition-transform duration-200 "
                 id="users-accordion "
+                onClick={toggleSideBar}
               >
                 <NavLink
                   to="/employees"
@@ -107,6 +108,24 @@ const Sidebar = ({ sidebar, toggleSideBar }) => {
               </li>
               <li
                 className=" hover:scale-105 transition-transform duration-200 "
+                onClick={toggleSideBar}
+                id="users-accordion "
+              >
+                <NavLink
+                  to="/categories"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white bg-[#7978E9] rounded-lg"
+                      : "flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:text-black hover:bg-white"
+                  }
+                >
+                <CiCircleList className="text-lg"/>
+                  <div className="text-sm">Categories</div>
+                </NavLink>
+              </li>
+              <li
+                className=" hover:scale-105 transition-transform duration-200 "
+                onClick={toggleSideBar}
                 id="users-accordion "
               >
                 <NavLink

@@ -140,7 +140,6 @@ const AddProduct = () => {
         }
       );
       const response = await res.json();
-      console.log(response);
       if (response.success) {
         toast.success("New Product is added Successfully!", {
           position: "top-right",
@@ -163,7 +162,6 @@ const AddProduct = () => {
       console.log(err);
     }
   };
-  console.log(data);
   const handleGoBack = () => {
     navigate(-1);
   };

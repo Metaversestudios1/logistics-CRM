@@ -9,23 +9,9 @@ import { FaAngleDown } from "react-icons/fa6";
 
 const AddEmployee = () => {
   const [loader, setLoader] = useState(false);
+  const [categories, setCategories] = useState([]);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const employeeType = [
-    {
-      id: 1,
-      type: "auto",
-    },
-    {
-      id: 2,
-      type: "lorry",
-    },
-    {
-      id: 3,
-      type: "truck",
-    },
-  ];
-
   const initialState = {
     name: "",
     email: "",
@@ -37,6 +23,19 @@ const AddEmployee = () => {
   };
   const [data, setData] = useState(initialState);
 
+  useEffect(() => {
+    fetchCategory();
+  }, []);
+
+  const fetchCategory = async () => {
+    const res = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/api/getAllCategoryWithoutPagination`
+    );
+    const response = await res.json();
+    if (response.success) {
+      setCategories(response.result);
+    }
+  };
   const validateEmployeeForm = () => {
     $.validator.addMethod(
       "validPhone",
@@ -154,7 +153,6 @@ const AddEmployee = () => {
         }
       );
       const response = await res.json();
-      console.log(response);
       if (response.success) {
         toast.success("New employee is added Successfully!", {
           position: "top-right",
@@ -310,14 +308,14 @@ const AddEmployee = () => {
                   className="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-black block w-full p-2.5 "
                 >
                   <option value="">Select an Employee Type.</option>
-                  {employeeType.map((option) => {
+                  {categories.map((option) => {
                     return (
                       <option
-                        key={option.id}
-                        value={option.type}
+                        key={option._id}
+                        value={option._id}
                         className=" bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-black block w-full p-2.5 "
                       >
-                        {option.type}
+                        {option.role}
                       </option>
                     );
                   })}
@@ -339,6 +337,7 @@ const AddEmployee = () => {
                   id="licenseNumber"
                   className="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-black block w-full p-2.5 "
                   placeholder="Enter license number"
+                  required
                 />
               </div>
               <div className="">
@@ -347,7 +346,6 @@ const AddEmployee = () => {
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                 >
                   Experience in Years{" "}
-                  <span className="text-red-900 text-lg ">&#x2a;</span>
                 </label>
                 <input
                   name="experienceYears"

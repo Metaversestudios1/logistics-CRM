@@ -6,8 +6,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ImCross } from "react-icons/im";
 import { IoMdEye } from "react-icons/io";
-const Employees = () => {
-  const [employees, setEmployees] = useState([]);
+const Category = () => {
+  const [categories, setCategories] = useState([]);
   const [noData, setNoData] = useState(false);
   const [loader, setLoader] = useState(true);
   const [page, setPage] = useState(1);
@@ -21,42 +21,19 @@ const Employees = () => {
 
   const fetchData = async () => {
     setLoader(true);
-
-    try {
-      const res = await fetch(
-        `${
-          import.meta.env.VITE_BACKEND_URL
-        }/api/getAllEmployees?page=${page}&limit=${pageSize}&search=${search}`
-      );
-      const response = await res.json();
-
-      if (response.success) {
-        setNoData(false);
-        if (response.result.length === 0) {
-          setNoData(true);
-        }
-
-        // Modify data to include role name for each employee
-        const modifiedData = await Promise.all(
-          response.result.map(async (employee) => {
-            let id = employee?.employeeType;
-            const roleRes = await fetch(
-              `${import.meta.env.VITE_BACKEND_URL}/api/getSingleCategory/${id}`
-            );
-            const roleData = await roleRes.json();
-            return {
-              ...employee,
-              employeeType: roleData?.result?.role || "Unknown", // add role name or default to "Unknown"
-            };
-          })
-        );
-
-        setEmployees(modifiedData);
-        setCount(response.count);
+    const res = await fetch(
+      `${
+        import.meta.env.VITE_BACKEND_URL
+      }/api/getAllCategory?page=${page}&limit=${pageSize}&search=${search}`
+    );
+    const response = await res.json();
+    if (response.success) {
+      setNoData(false);
+      if (response.result.length === 0) {
+        setNoData(true);
       }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
+      setCategories(response.result);
+      setCount(response.count);
       setLoader(false);
     }
   };
@@ -64,19 +41,18 @@ const Employees = () => {
   const handleDelete = async (e, id) => {
     e.preventDefault();
     const permissionOfDelete = window.confirm(
-      "Are you sure, you want to delete the employee"
+      "Are you sure, you want to delete the category"
     );
     if (permissionOfDelete) {
-      let employeeOne = employees.length === 1;
+      let categoryOne = categories.length === 1;
       if (count === 1) {
-        employeeOne = false;
+        categoryOne = false;
       }
       const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/deleteEmployee`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/deleteCategory/${id}`,
         {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id }),
         }
       );
       if (!res.ok) {
@@ -84,7 +60,7 @@ const Employees = () => {
       }
       const response = await res.json();
       if (response.success) {
-        toast.success("Employee is deleted Successfully!", {
+        toast.success("Category is deleted Successfully!", {
           position: "top-right",
           autoClose: 1000,
           hideProgressBar: false,
@@ -94,7 +70,7 @@ const Employees = () => {
           progress: undefined,
           theme: "light",
         });
-        if (employeeOne) {
+        if (categoryOne) {
           setPage(page - 1);
         } else {
           fetchData();
@@ -129,10 +105,10 @@ const Employees = () => {
       />
 
       <div className="flex items-center">
-        <div className="text-2xl font-bold mx-2 my-8 px-4">Employees List</div>
+        <div className="text-2xl font-bold mx-2 my-8 px-4">Categories List</div>
       </div>
       <div className="flex justify-between">
-        <NavLink to="/employees/addemployee">
+        <NavLink to="/categories/addcategory">
           <button className="bg-[#16144b] text-white p-3 m-5 text-sm rounded-lg">
             Add New
           </button>
@@ -162,7 +138,7 @@ const Employees = () => {
         </div>
       )}
       <div className="relative overflow-x-auto m-5 mb-0">
-        {employees.length > 0 && (
+        {categories.length > 0 && (
           <table className="w-full text-sm text-left rtl:text-right border-2 border-gray-300">
             <thead className="text-xs uppercase bg-gray-200">
               <tr>
@@ -170,31 +146,10 @@ const Employees = () => {
                   Sr no.
                 </th>
                 <th scope="col" className="px-6 py-3 border-2 border-gray-300">
-                  Full name
+                  Role Name
                 </th>
                 <th scope="col" className="px-6 py-3 border-2 border-gray-300">
-                  Contact
-                </th>
-                <th scope="col" className="px-6 py-3 border-2 border-gray-300">
-                  Email
-                </th>
-                <th scope="col" className="px-6 py-3 border-2 border-gray-300">
-                  Employee Type
-                </th>
-                <th scope="col" className="px-6 py-3 border-2 border-gray-300">
-                  License number
-                </th>
-                <th scope="col" className="px-6 py-3 border-2 border-gray-300">
-                  Experience Years
-                </th>
-                <th scope="col" className="px-6 py-3 border-2 border-gray-300">
-                  Availability Status
-                </th>
-                <th scope="col" className="px-6 py-3 border-2 border-gray-300">
-                  Current Location
-                </th>
-                <th scope="col" className="px-6 py-3 border-2 border-gray-300">
-                  Ratings
+                  Description
                 </th>
                 <th scope="col" className="px-6 py-3 border-2 border-gray-300">
                   Action
@@ -203,7 +158,7 @@ const Employees = () => {
             </thead>
 
             <tbody>
-              {employees.map((item, index) => (
+              {categories.map((item, index) => (
                 <tr key={item?._id} className="bg-white">
                   <th
                     scope="row"
@@ -216,39 +171,21 @@ const Employees = () => {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border-2 border-gray-300"
                   >
-                    {item?.name}
+                    {item?.role}
                   </th>
-                  <td className="px-6 py-4 border-2 border-gray-300">
-                    {item?.contactNumber}
+                  <td
+                    scope="row"
+                    className="px-6 py-4  text-gray-900 whitespace-nowrap border-2 border-gray-300"
+                  >
+                    {item?.description}
                   </td>
-                  <td className="px-6 py-4 border-2 border-gray-300">
-                    {item?.email}
-                  </td>
-                  <td className="px-6 py-4 border-2 border-gray-300">
-                    {item?.employeeType}
-                  </td>
-
-                  <td className="px-6 py-4 border-2 border-gray-300">
-                    {item?.licenseNumber}
-                  </td>
-                  <td className="px-6 py-4 border-2 border-gray-300">
-                    {item?.experienceYears}
-                  </td>
-                  <td className="px-6 py-4 border-2 border-gray-300">
-                    {item?.availabilityStatus}
-                  </td>
-                  <td className="px-6 py-4 border-2 border-gray-300">
-                    {item?.currentLocation}
-                  </td>
-                  <td className="px-6 py-4 border-2 border-gray-300">
-                    {item?.ratings}
-                  </td>
+                
                   <td className=" p-5   border-2  border-gray-300">
                     <div className="flex items-center">
-                      {/* <NavLink to={`/employees/showemployee/${item?._id}`}>
+                      {/* <NavLink to={`/categories/showemployee/${item?._id}`}>
                         <IoMdEye className="text-2xl cursor-pointer text-blue-900" />
                       </NavLink>*/}
-                      <NavLink to={`/employees/editemployee/${item?._id}`}>
+                      <NavLink to={`/categories/editcategory/${item?._id}`}>
                         <CiEdit className="text-2xl cursor-pointer text-green-900" />
                       </NavLink>
                       <MdDelete
@@ -265,11 +202,11 @@ const Employees = () => {
       </div>
       {noData && (
         <div className="text-center text-xl">
-          Currently! There are no users in the storage.
+          Currently! There are no categories in the storage.
         </div>
       )}
 
-      {employees.length > 0 && (
+      {categories.length > 0 && (
         <div className="flex flex-col items-center my-10">
           <span className="text-sm text-black">
             Showing{" "}
@@ -291,7 +228,7 @@ const Employees = () => {
             <button
               onClick={() => setPage(page + 1)}
               disabled={
-                employees.length < pageSize || startIndex + pageSize >= count
+                categories.length < pageSize || startIndex + pageSize >= count
               }
               className="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 border-0 border-s border-gray-700 rounded-e hover:bg-gray-900"
             >
@@ -304,4 +241,4 @@ const Employees = () => {
   );
 };
 
-export default Employees;
+export default Category;

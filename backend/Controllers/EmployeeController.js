@@ -25,7 +25,6 @@ const insertEmployee = async (req, res) => {
 const updateEmployee = async (req, res) => {
   try {
     const { id, data } = req.body;
-    console.log(id, data);
     const result = await Employee.updateOne({ _id: id }, { $set: data });
     if (!result) {
       return res
@@ -84,7 +83,6 @@ const getAllEmployees = async (req, res) => {
 const getSingleEmployee = async (req, res) => {
   try {
     const { id } = req.body;
-    console.log(id);
     const result = await Employee.findOne({ _id: id });
 
     if (!result) {

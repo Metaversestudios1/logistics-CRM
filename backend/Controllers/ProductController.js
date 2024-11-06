@@ -17,7 +17,6 @@ const createProduct = async (req, res) => {
 
 // Update a product
 const updateProduct = async (req, res) => {
-  console.log(req.params,req.body)
   try {
     const { id } = req.params;
     const updatedProduct = await Product.findByIdAndUpdate(id, req.body, {

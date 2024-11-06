@@ -164,7 +164,6 @@ const EditProduct = () => {
         }
       );
       const response = await res.json();
-      console.log(response);
       if (response.success) {
         toast.success("Product is updated Successfully!", {
           position: "top-right",

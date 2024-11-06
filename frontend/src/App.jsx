@@ -9,6 +9,9 @@ import EditEmployee from "./Components/employees/EditEmployee";
 import Product from "./Components/product/Product";
 import AddProduct from "./Components/product/AddProduct";
 import EditProduct from "./Components/product/EditProduct";
+import EditCategory from "./Components/category/EditCategory";
+import AddCategory from "./Components/category/AddCategory";
+import Categories from "./Components/category/Categories";
 
 function App() {
 
@@ -24,6 +27,9 @@ function App() {
             <Route path="/products" element={<Product/>} />
             <Route path="/products/addproduct" element={<AddProduct/>} />
             <Route path="/products/editproduct/:id" element={<EditProduct/>} />
+            <Route path="/categories" element={<Categories/>} />
+            <Route path="/categories/addcategory" element={<AddCategory/>} />
+            <Route path="/categories/editcategory/:id" element={<EditCategory/>} />
           </Routes>
         </Layout>
       </Router>

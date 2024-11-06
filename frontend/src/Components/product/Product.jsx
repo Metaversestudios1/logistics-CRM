@@ -27,7 +27,6 @@ const Product = () => {
       }/api/getAllProducts?page=${page}&limit=${pageSize}&search=${search}`
     );
     const response = await res.json();
-    console.log(response);
     if (response.success) {
       setNoData(false);
       if (response.result.length === 0) {
@@ -41,7 +40,6 @@ const Product = () => {
 
   const handleDelete = async (e, id) => {
     e.preventDefault();
-    console.log(id);
     const permissionOfDelete = window.confirm(
       "Are you sure, you want to delete the product"
     );
@@ -61,7 +59,6 @@ const Product = () => {
         throw new Error("Network response was not ok");
       }
       const response = await res.json();
-      console.log(response);
       if (response.success) {
         toast.success("Product is deleted Successfully!", {
           position: "top-right",

@@ -16,8 +16,8 @@ const EmployeeSchema = new mongoose.Schema(
     },
 
     employeeType: {
-      type: String,
-      enum: ["auto", "lorry", "truck"], // Specifies type of vehicle employee drives
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: "Category", 
       required: true,
     },
     contactNumber: {
