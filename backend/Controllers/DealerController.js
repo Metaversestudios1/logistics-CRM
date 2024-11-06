@@ -1,4 +1,4 @@
-const Dealer = require('../models/Dealer');
+const Dealer = require('../Models/Dealer');
 
 // Create a new dealer
 const createDealer = async (req, res) => {

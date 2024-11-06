@@ -1,4 +1,4 @@
-const EmployeeActivityLog = require('../models/EmployeeActivityLog');
+const EmployeeActivityLog = require('../Models/EmployeeActivityLog');
 
 // Create a new employee activity log
 const createActivityLog = async (req, res) => {

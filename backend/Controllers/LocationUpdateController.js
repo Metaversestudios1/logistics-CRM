@@ -1,4 +1,4 @@
-const LocationUpdate = require('../models/LocationUpdate');
+const LocationUpdate = require('../Models/LocationUpdate');
 
 // Create a new location update
 const createLocationUpdate = async (req, res) => {

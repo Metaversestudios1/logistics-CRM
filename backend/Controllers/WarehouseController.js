@@ -1,4 +1,4 @@
-const Warehouse = require('../models/Warehouse');
+const Warehouse = require('../Models/Warehouse');
 
 // Create a new warehouse
 const createWarehouse = async (req, res) => {

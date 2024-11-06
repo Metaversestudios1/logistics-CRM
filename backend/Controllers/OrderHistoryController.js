@@ -1,4 +1,4 @@
-const OrderHistory = require('../models/OrderHistory');
+const OrderHistory = require('../Models/OrderHistory');
 
 // Create a new order history entry
 const createOrderHistory = async (req, res) => {

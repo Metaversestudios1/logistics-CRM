@@ -80,6 +80,7 @@ const getAllProducts = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
+    
     const result = await Product.findByIdAndUpdate(
       id,
       { deletedAt: new Date() },
