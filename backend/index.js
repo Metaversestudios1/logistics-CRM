@@ -7,7 +7,7 @@ const server = http.createServer(app);
 const connectDB = require("./config/db");
 app.use(
   cors({
-    origin: "http://localhost:5173", // Allow only specific origin
+    origin: "https://logistics-crm-frontend.vercel.app", // Allow only specific origin
     methods: ["GET", "POST", "DELETE", "PUT"], // Allow specific methods
     allowedHeaders: ["Content-Type", "Authorization"], // Allow specific headers
   })
