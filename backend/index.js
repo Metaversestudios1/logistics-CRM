@@ -19,19 +19,19 @@ app.use(express.urlencoded({ extended: true }));
 const AdminRoute = require("./Routes/AdminRoute");
 const EmployeeRoute = require("./Routes/EmployeeRoute");
 
-const productRoutes = require("./routes/ProductRoute");
-const dealerRoutes = require("./routes/DealerRoute");
-const warehouseRoutes = require("./routes/WarehouseRoute");
-const assignmentRoutes = require("./routes/AssignmentRoute");
-const orderHistoryRoutes = require("./routes/OrderHistoryRoute");
+const productRoute = require("./Routes/ProductRoute");
+const dealerRoute = require("./Routes/DealerRoute");
+const warehouseRoute = require("./Routes/WarehouseRoute");
+const assignmentRoute = require("./Routes/AssignmentRoute");
+const orderHistoryRoute = require("./Routes/OrderHistoryRoute");
 
 app.use("/api", AdminRoute);
 app.use("/api", EmployeeRoute);
-app.use("/api", productRoutes);
-app.use("/api", dealerRoutes);
-app.use("/api", warehouseRoutes);
-app.use("/api", assignmentRoutes);
-app.use("/api", orderHistoryRoutes);
+app.use("/api", productRoute);
+app.use("/api", dealerRoute);
+app.use("/api", warehouseRoute);
+app.use("/api", assignmentRoute);
+app.use("/api", orderHistoryRoute);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
