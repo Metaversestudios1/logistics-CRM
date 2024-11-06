@@ -80,18 +80,23 @@ const getAllProducts = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const deletedProduct = await Product.findByIdAndDelete(id);
-    if (!deletedProduct)
+    const result = await Product.findByIdAndUpdate(
+      id,
+      { deletedAt: new Date() },
+      { new: true }
+    );
+    if (!result) {
       return res
         .status(404)
         .json({ success: false, message: "Product not found" });
-    res
-      .status(200)
-      .json({ success: true, message: "Product deleted", deletedProduct });
+    }
+    res.status(200).json({
+      success: true,
+    });
   } catch (error) {
     res
       .status(500)
-      .json({ success: false, message: "Error deleting product", error });
+      .json({ success: false, message: "error fetching product" });
   }
 };
 

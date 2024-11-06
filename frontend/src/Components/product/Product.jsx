@@ -51,12 +51,17 @@ const Product = () => {
         productOne = false;
       }
       const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/deleteProduct/${id}`
+        `${import.meta.env.VITE_BACKEND_URL}/api/deleteProduct/${id}`,
+        {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+        }
       );
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }
       const response = await res.json();
+      console.log(response);
       if (response.success) {
         toast.success("Product is deleted Successfully!", {
           position: "top-right",
@@ -183,7 +188,7 @@ const Product = () => {
                   >
                     {item?.name}
                   </th>
-                  
+
                   <td className="px-6 py-4 border-2 border-gray-300">
                     {item?.dimensions.typeOfProduct}
                   </td>
@@ -195,7 +200,8 @@ const Product = () => {
                   </td>
 
                   <td className="px-6 py-4 border-2 border-gray-300">
-                    {item?.dimensions.length} X {item?.dimensions.width} X {item?.dimensions.height} {item?.dimensions.unit}
+                    {item?.dimensions.length} X {item?.dimensions.width} X{" "}
+                    {item?.dimensions.height} {item?.dimensions.unit}
                   </td>
                   <td className="px-6 py-4 border-2 border-gray-300">
                     {item?.description}
