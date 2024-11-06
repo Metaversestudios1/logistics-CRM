@@ -5,8 +5,8 @@ dotenv.config();
 
 const connectDB = async () =>{
     try{
-        //   await mongoose.connect(process.env.MONGODB_URI);
-        await mongoose.connect("mongodb://localhost:27017/vendorCRM");
+          await mongoose.connect(process.env.MONGODB_URI);
+        // await mongoose.connect("mongodb://localhost:27017/vendorCRM");
         console.log('mongdb connected');
 
     }catch(error){

@@ -228,7 +228,7 @@ const Product = () => {
       </div>
       {noData && (
         <div className="text-center text-xl">
-          Currently! There are no users in the storage.
+          Currently! There are no products in the storage.
         </div>
       )}
 
