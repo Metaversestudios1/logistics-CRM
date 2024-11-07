@@ -1,14 +1,35 @@
 const mongoose = require("mongoose");
 
-const WarehouseSchema = new mongoose.Schema({
-    name: String,
-    address: String,
+const WarehouseSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    address: { type: String, required: true },
     contact: {
-      phone: String,
-      email: String,
+      phone: { type: String, required: true },
+      email: { type: String, required: true },
     },
-    manager: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // assuming a user with 'manager' role manages the warehouse
+    manager: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Employee",
+      required: true,
+    },
+    currentInventory: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Product",
+    },
+    dispatchHistory: [
+      {
+        orderId: { type: mongoose.Schema.Types.ObjectId, ref: "Order" },
+        dispatchDate: { type: Date },
+        delivered: { type: Boolean },
+        deliveredDate: { type: Date },
+      },
+    ],
     createdAt: { type: Date, default: Date.now },
-    updatedAt: Date,
-  });
-  
+    deletedAt: { type: Date, default: null },
+    updatedAt: { type: Date },
+  },
+  { timestamps: true, collection: "Warehouse" }
+);
+
+module.exports = mongoose.model("Warehouse", WarehouseSchema);

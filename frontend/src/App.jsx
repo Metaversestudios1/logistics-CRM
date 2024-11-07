@@ -12,6 +12,9 @@ import EditProduct from "./Components/product/EditProduct";
 import EditCategory from "./Components/category/EditCategory";
 import AddCategory from "./Components/category/AddCategory";
 import Categories from "./Components/category/Categories";
+import EditWarehouse from "./Components/warehouse/EditWarehouse";
+import AddWarehouse from "./Components/warehouse/AddWarehouse";
+import Warehouses from "./Components/warehouse/Warehouses";
 
 function App() {
 
@@ -30,6 +33,9 @@ function App() {
             <Route path="/categories" element={<Categories/>} />
             <Route path="/categories/addcategory" element={<AddCategory/>} />
             <Route path="/categories/editcategory/:id" element={<EditCategory/>} />
+            <Route path="/warehouses" element={<Warehouses/>} />
+            <Route path="/warehouses/addwarehouse" element={<AddWarehouse/>} />
+            <Route path="/warehouses/editwarehouse/:id" element={<EditWarehouse/>} />
           </Routes>
         </Layout>
       </Router>

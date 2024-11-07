@@ -3,6 +3,8 @@ import { FaAngleDown, FaAngleRight } from "react-icons/fa6";
 import { NavLink } from "react-router-dom";
 import { AiOutlineProduct } from "react-icons/ai";
 import { CiCircleList } from "react-icons/ci";
+import { PiWarehouse } from "react-icons/pi";
+import { FaPeopleRoof } from "react-icons/fa6";
 const Sidebar = ({ sidebar, toggleSideBar }) => {
   const [openSubMenu, setOpenSubMenu] = useState({
     client: false,
@@ -138,6 +140,40 @@ const Sidebar = ({ sidebar, toggleSideBar }) => {
                 >
                   <AiOutlineProduct className="text-lg"/>
                   <div className="text-sm">Products</div>
+                </NavLink>
+              </li>
+              <li
+                className=" hover:scale-105 transition-transform duration-200 "
+                onClick={toggleSideBar}
+                id="users-accordion "
+              >
+                <NavLink
+                  to="/warehouses"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white bg-[#7978E9] rounded-lg"
+                      : "flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:text-black hover:bg-white"
+                  }
+                >
+                  <PiWarehouse className="text-lg"/>
+                  <div className="text-sm">Warehouses</div>
+                </NavLink>
+              </li>
+              <li
+                className=" hover:scale-105 transition-transform duration-200 "
+                onClick={toggleSideBar}
+                id="users-accordion "
+              >
+                <NavLink
+                  to="/dealers"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white bg-[#7978E9] rounded-lg"
+                      : "flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:text-black hover:bg-white"
+                  }
+                >
+                  <FaPeopleRoof className="text-lg"/>
+                  <div className="text-sm">Dealers</div>
                 </NavLink>
               </li>
             </ul>

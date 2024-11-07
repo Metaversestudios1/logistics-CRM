@@ -97,7 +97,7 @@ const EmployeeSchema = new mongoose.Schema(
       default: null,
     },
   },
-  { timestamps: true, collection: "employee" }
+  { timestamps: true, collection: "Employee" }
 );
 
 module.exports = mongoose.model("Employee", EmployeeSchema);

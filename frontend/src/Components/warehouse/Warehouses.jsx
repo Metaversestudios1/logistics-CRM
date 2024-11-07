@@ -6,8 +6,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ImCross } from "react-icons/im";
 import { IoMdEye } from "react-icons/io";
-const Product = () => {
-  const [products, setProducts] = useState([]);
+const Warehouses = () => {
+  const [warehouses, setWarehouses] = useState([]);
   const [noData, setNoData] = useState(false);
   const [loader, setLoader] = useState(true);
   const [page, setPage] = useState(1);
@@ -20,23 +20,66 @@ const Product = () => {
   }, [page, search]);
 
   const fetchData = async () => {
-    setLoader(true);
+  setLoader(true);
+  try {
     const res = await fetch(
       `${
         import.meta.env.VITE_BACKEND_URL
-      }/api/getAllProducts?page=${page}&limit=${pageSize}&search=${search}`
+      }/api/getAllWarehouses?page=${page}&limit=${pageSize}&search=${search}`
     );
     const response = await res.json();
+    
     if (response.success) {
-      setNoData(false);
-      if (response.result.length === 0) {
-        setNoData(true);
-      }
-      setProducts(response.result);
+      const warehousesWithDetails = await Promise.all(
+        response.result.map(async (warehouse) => {
+          // Fetch manager name
+          const managerRes = await fetch(
+            `${import.meta.env.VITE_BACKEND_URL}/api/getSingleEmployee`,{
+              method: "POST",
+              headers: {"Content-Type":"application/json"},
+              body: JSON.stringify({id:warehouse.manager})
+            }
+          );
+          const managerData = await managerRes.json();
+          const manager = managerData.success ? managerData.result.name : 'Unknown';
+
+          // Fetch product names for currentInventory
+          const currentInventory = await Promise.all(
+            warehouse.currentInventory.map(async (productId) => {
+              let id = productId
+              const productRes = await fetch(
+                `${import.meta.env.VITE_BACKEND_URL}/api/getProduct/${id}`
+              );
+              const productData = await productRes.json();
+              console.log(productData)
+              return productData.success ? productData.result.name : 'Unknown Product';
+            })
+          );
+
+          // Return the warehouse with added manager name and product names
+          return {
+            ...warehouse,
+            manager,
+            currentInventory,
+          };
+        })
+      );
+
+      setNoData(warehousesWithDetails.length === 0);
+      setWarehouses(warehousesWithDetails);
       setCount(response.count);
-      setLoader(false);
+    } else {
+      setNoData(true);
+      setWarehouses([]);
     }
-  };
+  } catch (error) {
+    console.error("Error fetching warehouse data:", error);
+    setNoData(true);
+  } finally {
+    setLoader(false);
+  }
+};
+
 
   const handleDelete = async (e, id) => {
     e.preventDefault();
@@ -44,12 +87,12 @@ const Product = () => {
       "Are you sure, you want to delete the product"
     );
     if (permissionOfDelete) {
-      let productOne = products.length === 1;
+      let warehouseOne = warehouses.length === 1;
       if (count === 1) {
-        productOne = false;
+        warehouseOne = false;
       }
       const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/deleteProduct/${id}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/deleteWarehouse/${id}`,
         {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
@@ -60,7 +103,7 @@ const Product = () => {
       }
       const response = await res.json();
       if (response.success) {
-        toast.success("Product is deleted Successfully!", {
+        toast.success("Warehouse is deleted Successfully!", {
           position: "top-right",
           autoClose: 1000,
           hideProgressBar: false,
@@ -70,7 +113,7 @@ const Product = () => {
           progress: undefined,
           theme: "light",
         });
-        if (productOne) {
+        if (warehouseOne) {
           setPage(page - 1);
         } else {
           fetchData();
@@ -105,10 +148,10 @@ const Product = () => {
       />
 
       <div className="flex items-center">
-        <div className="text-2xl font-bold mx-2 my-8 px-4">Products List</div>
+        <div className="text-2xl font-bold mx-2 my-8 px-4">Warehouses List</div>
       </div>
       <div className="flex justify-between">
-        <NavLink to="/products/addproduct">
+        <NavLink to="/warehouses/addwarehouse">
           <button className="bg-[#16144b] text-white p-3 m-5 text-sm rounded-lg">
             Add New
           </button>
@@ -138,7 +181,7 @@ const Product = () => {
         </div>
       )}
       <div className="relative overflow-x-auto m-5 mb-0">
-        {products.length > 0 && (
+        {warehouses.length > 0 && (
           <table className="w-full text-sm text-left rtl:text-right border-2 border-gray-300">
             <thead className="text-xs uppercase bg-gray-200">
               <tr>
@@ -146,23 +189,24 @@ const Product = () => {
                   Sr no.
                 </th>
                 <th scope="col" className="px-6 py-3 border-2 border-gray-300">
-                  Name of product
+                  Name of warehouse
                 </th>
                 <th scope="col" className="px-6 py-3 border-2 border-gray-300">
-                  Type of product
+                  Contact number
                 </th>
                 <th scope="col" className="px-6 py-3 border-2 border-gray-300">
-                  Quantity
+                  Email
                 </th>
                 <th scope="col" className="px-6 py-3 border-2 border-gray-300">
-                  Weight
+                  Address
                 </th>
                 <th scope="col" className="px-6 py-3 border-2 border-gray-300">
-                  Dimensions
+                  Inventory
                 </th>
                 <th scope="col" className="px-6 py-3 border-2 border-gray-300">
-                  Description
+                  Manager of warehouse
                 </th>
+               
                 <th scope="col" className="px-6 py-3 border-2 border-gray-300">
                   Action
                 </th>
@@ -170,45 +214,42 @@ const Product = () => {
             </thead>
 
             <tbody>
-              {products.map((item, index) => (
+              {warehouses.map((item, index) => (
                 <tr key={item?._id} className="bg-white">
                   <th
                     scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border-2 border-gray-300"
+                    className="px-6 py-4 font-medium text-gray-900  border-2 border-gray-300"
                   >
                     {startIndex + index + 1}
                   </th>
 
                   <th
                     scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border-2 border-gray-300"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap  border-2 border-gray-300"
                   >
                     {item?.name}
                   </th>
-
                   <td className="px-6 py-4 border-2 border-gray-300">
-                    {item?.dimensions.typeOfProduct}
+                    {item?.contact?.phone}
                   </td>
                   <td className="px-6 py-4 border-2 border-gray-300">
-                    {item?.quantity}
+                    {item?.contact?.email}
                   </td>
                   <td className="px-6 py-4 border-2 border-gray-300">
-                    {item?.weight} KG
+                    {item?.address}
                   </td>
-
-                  <td className="px-6 py-4 border-2 border-gray-300">
-                    {item?.dimensions.length} X {item?.dimensions.width} X{" "}
-                    {item?.dimensions.height} {item?.dimensions.unit}
+                  <td className="px-6 py-4 border-2  border-gray-300">
+                    {(item?.currentInventory).join(", ")}
                   </td>
                   <td className="px-6 py-4 border-2 border-gray-300">
-                    {item?.description}
+                    {item?.manager}
                   </td>
                   <td className=" p-5   border-2  border-gray-300">
                     <div className="flex items-center">
                       {/* <NavLink to={`/employees/showemployee/${item?._id}`}>
                         <IoMdEye className="text-2xl cursor-pointer text-blue-900" />
                       </NavLink>*/}
-                      <NavLink to={`/products/editproduct/${item?._id}`}>
+                      <NavLink to={`/warehouses/editwarehouse/${item?._id}`}>
                         <CiEdit className="text-2xl cursor-pointer text-green-900" />
                       </NavLink>
                       <MdDelete
@@ -225,11 +266,11 @@ const Product = () => {
       </div>
       {noData && (
         <div className="text-center text-xl">
-          Currently! There are no products in the storage.
+          Currently! There are no warehouses in the storage.
         </div>
       )}
 
-      {products.length > 0 && (
+      {warehouses.length > 0 && (
         <div className="flex flex-col items-center my-10">
           <span className="text-sm text-black">
             Showing{" "}
@@ -251,7 +292,7 @@ const Product = () => {
             <button
               onClick={() => setPage(page + 1)}
               disabled={
-                products.length < pageSize || startIndex + pageSize >= count
+                warehouses.length < pageSize || startIndex + pageSize >= count
               }
               className="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 border-0 border-s border-gray-700 rounded-e hover:bg-gray-900"
             >
@@ -264,4 +305,4 @@ const Product = () => {
   );
 };
 
-export default Product;
+export default Warehouses;

@@ -1,13 +1,17 @@
-const Warehouse = require('../Models/Warehouse');
+const Warehouse = require("../Models/Warehouse");
 
 // Create a new warehouse
 const createWarehouse = async (req, res) => {
   try {
     const warehouse = new Warehouse(req.body);
     await warehouse.save();
-    res.status(201).json({ success: true, message: "Warehouse created", warehouse });
+    res
+      .status(201)
+      .json({ success: true, message: "Warehouse created", warehouse });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Error creating warehouse", error });
+    res
+      .status(500)
+      .json({ success: false, message: "Error creating warehouse", error });
   }
 };
 
@@ -15,11 +19,20 @@ const createWarehouse = async (req, res) => {
 const updateWarehouse = async (req, res) => {
   try {
     const { id } = req.params;
-    const updatedWarehouse = await Warehouse.findByIdAndUpdate(id, req.body, { new: true });
-    if (!updatedWarehouse) return res.status(404).json({ success: false, message: "Warehouse not found" });
-    res.status(200).json({ success: true, message: "Warehouse updated", updatedWarehouse });
+    const updatedWarehouse = await Warehouse.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    if (!updatedWarehouse)
+      return res
+        .status(404)
+        .json({ success: false, message: "Warehouse not found" });
+    res
+      .status(200)
+      .json({ success: true, message: "Warehouse updated", updatedWarehouse });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Error updating warehouse", error });
+    res
+      .status(500)
+      .json({ success: false, message: "Error updating warehouse", error });
   }
 };
 
@@ -27,21 +40,28 @@ const updateWarehouse = async (req, res) => {
 const getWarehouse = async (req, res) => {
   try {
     const { id } = req.params;
-    const warehouse = await Warehouse.findById(id);
-    if (!warehouse) return res.status(404).json({ success: false, message: "Warehouse not found" });
-    res.status(200).json({ success: true, warehouse });
+    const result = await Warehouse.findById(id);
+    if (!result)
+      return res
+        .status(404)
+        .json({ success: false, message: "Warehouse not found" });
+    res.status(200).json({ success: true, result });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Error fetching warehouse", error });
+    res
+      .status(500)
+      .json({ success: false, message: "Error fetching warehouse", error });
   }
 };
 
 // Get all warehouses
 const getAllWarehouses = async (req, res) => {
   try {
-    const warehouses = await Warehouse.find({});
-    res.status(200).json({ success: true, warehouses });
+    const result = await Warehouse.find({});
+    res.status(200).json({ success: true, result });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Error fetching warehouses", error });
+    res
+      .status(500)
+      .json({ success: false, message: "Error fetching warehouses", error });
   }
 };
 
@@ -50,10 +70,17 @@ const deleteWarehouse = async (req, res) => {
   try {
     const { id } = req.params;
     const deletedWarehouse = await Warehouse.findByIdAndDelete(id);
-    if (!deletedWarehouse) return res.status(404).json({ success: false, message: "Warehouse not found" });
-    res.status(200).json({ success: true, message: "Warehouse deleted", deletedWarehouse });
+    if (!deletedWarehouse)
+      return res
+        .status(404)
+        .json({ success: false, message: "Warehouse not found" });
+    res
+      .status(200)
+      .json({ success: true, message: "Warehouse deleted", deletedWarehouse });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Error deleting warehouse", error });
+    res
+      .status(500)
+      .json({ success: false, message: "Error deleting warehouse", error });
   }
 };
 

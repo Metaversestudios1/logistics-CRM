@@ -28,7 +28,7 @@ const updateProduct = async (req, res) => {
         .json({ success: false, message: "Product not found" });
     res
       .status(200)
-      .json({ success: true, message: "Product updated", updatedProduct });
+      .json({ success: true});
   } catch (error) {
     res
       .status(500)
@@ -40,12 +40,12 @@ const updateProduct = async (req, res) => {
 const getProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const product = await Product.findById(id);
-    if (!product)
+    const result = await Product.findById(id);
+    if (!result)
       return res
         .status(404)
         .json({ success: false, message: "Product not found" });
-    res.status(200).json({ success: true, product });
+    res.status(200).json({ success: true, result });
   } catch (error) {
     res
       .status(500)
