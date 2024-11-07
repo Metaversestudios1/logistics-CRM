@@ -27,9 +27,11 @@ const updateDealer = async (req, res) => {
 const getDealer = async (req, res) => {
   try {
     const { id } = req.params;
-    const dealer = await Dealer.findById(id);
-    if (!dealer) return res.status(404).json({ success: false, message: "Dealer not found" });
-    res.status(200).json({ success: true, dealer });
+    console.log(id)
+    const result = await Dealer.findById(id);
+    console.log(result)
+    if (!result) return res.status(404).json({ success: false, message: "Dealer not found" });
+    res.status(200).json({ success: true, result });
   } catch (error) {
     res.status(500).json({ success: false, message: "Error fetching dealer", error });
   }
@@ -37,12 +39,23 @@ const getDealer = async (req, res) => {
 
 // Get all dealers
 const getAllDealers = async (req, res) => {
-  try {
-    const dealers = await Dealer.find({});
-    res.status(200).json({ success: true, dealers });
-  } catch (error) {
-    res.status(500).json({ success: false, message: "Error fetching dealers", error });
+  const pageSize = parseInt(req.query.limit);
+  const page = parseInt(req.query.page);
+  const search = req.query.search;
+
+  const query = {
+    deletedAt: null,
+  };
+  if (search) {
+    query.name = { $regex: search, $options: "i" };
   }
+
+  const result = await Dealer.find(query)
+    .sort({ createdAt: -1 })
+    .skip((page - 1) * pageSize)
+    .limit(pageSize);
+  const count = await Dealer.find(query).countDocuments();
+  res.status(200).json({ success: true, result, count });
 };
 
 // Delete a dealer

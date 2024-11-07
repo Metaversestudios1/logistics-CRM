@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const {
   createDealer,
@@ -6,21 +6,11 @@ const {
   getDealer,
   getAllDealers,
   deleteDealer,
-} = require('../Controllers/DealerController');
-
-// Create a new dealer
-router.post('/', createDealer);
-
-// Update a dealer
-router.put('/:id', updateDealer);
-
-// Get a single dealer
-router.get('/:id', getDealer);
-
-// Get all dealers
-router.get('/', getAllDealers);
-
-// Delete a dealer
-router.delete('/:id', deleteDealer);
+} = require("../Controllers/DealerController");
+router.post("/createDealer", createDealer);
+router.put("/updateDealer/:id", updateDealer);
+router.get("/getDealer/:id", getDealer);
+router.get("/getAllDealers", getAllDealers);
+router.delete("/deleteDealer/:id", deleteDealer);
 
 module.exports = router;

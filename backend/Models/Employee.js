@@ -16,8 +16,8 @@ const EmployeeSchema = new mongoose.Schema(
     },
 
     employeeType: {
-      type: mongoose.Schema.Types.ObjectId, 
-      ref: "Category", 
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
       required: true,
     },
     contactNumber: {
@@ -46,10 +46,16 @@ const EmployeeSchema = new mongoose.Schema(
     },
     assignedProducts: [
       {
-        productId: {
+        orderId: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "Product", // Reference to the product being transported
+          ref: "Order",
         },
+        productId: [
+          {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Product", // Reference to the product being transported
+          },
+        ],
         status: {
           type: String,
           enum: ["Assigned", "In Transit", "Delivered", "Cancelled"],

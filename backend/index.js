@@ -20,18 +20,20 @@ const AdminRoute = require("./Routes/AdminRoute");
 const EmployeeRoute = require("./Routes/EmployeeRoute");
 
 const productRoute = require("./Routes/ProductRoute");
-// const dealerRoute = require("./Routes/DealerRoute");
+const dealerRoute = require("./Routes/DealerRoute");
 const warehouseRoute = require("./Routes/WarehouseRoute");
 // const assignmentRoute = require("./Routes/AssignmentRoute");
 // const orderHistoryRoute = require("./Routes/OrderHistoryRoute");
 const CategoryRoute = require("./Routes/CategoryRoute");
 const CommonRoute = require("./Routes/CommonRoute");
+const OrderRoute = require("./Routes/OrderRoute");
 
 app.use("/api", AdminRoute);
 app.use("/api", EmployeeRoute);
 app.use("/api", productRoute);
-// app.use("/api", dealerRoute);
+app.use("/api", dealerRoute);
 app.use("/api", warehouseRoute);
+app.use("/api", OrderRoute);
 // app.use("/api", assignmentRoute);
 // app.use("/api", orderHistoryRoute);
 app.use("/api", CategoryRoute);
