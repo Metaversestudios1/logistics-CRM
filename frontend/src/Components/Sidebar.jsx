@@ -4,6 +4,8 @@ import { NavLink } from "react-router-dom";
 import { AiOutlineProduct } from "react-icons/ai";
 import { CiCircleList } from "react-icons/ci";
 import { PiWarehouse } from "react-icons/pi";
+import { GrHistory } from "react-icons/gr";
+import { GiNotebook } from "react-icons/gi";
 import { FaPeopleRoof } from "react-icons/fa6";
 const Sidebar = ({ sidebar, toggleSideBar }) => {
   const [openSubMenu, setOpenSubMenu] = useState({
@@ -22,7 +24,7 @@ const Sidebar = ({ sidebar, toggleSideBar }) => {
   return (
     <>
       <div
-        className={`h-full bg-[#4B49AC] flex-col w-[260px] overflow-y-auto overflow-x-hidden ${
+        className={`h-full bg-[#4B49AC] w-[260px] flex-col  overflow-y-auto overflow-x-hidden ${
           sidebar ? "hidden" : "flex"
         } md:block`}
       >
@@ -174,6 +176,40 @@ const Sidebar = ({ sidebar, toggleSideBar }) => {
                 >
                   <FaPeopleRoof className="text-lg"/>
                   <div className="text-sm">Dealers</div>
+                </NavLink>
+              </li>
+              <li
+                className=" hover:scale-105 transition-transform duration-200 "
+                onClick={toggleSideBar}
+                id="users-accordion "
+              >
+                <NavLink
+                  to="/assigningorder"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white bg-[#7978E9] rounded-lg"
+                      : "flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:text-black hover:bg-white"
+                  }
+                >
+                  <GiNotebook className="text-xl -rotate-12"/>
+                  <div className="text-sm">Order assigning</div>
+                </NavLink>
+              </li>
+              <li
+                className=" hover:scale-105 transition-transform duration-200 "
+                onClick={toggleSideBar}
+                id="users-accordion "
+              >
+                <NavLink
+                  to="/assigningorder"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white bg-[#7978E9] rounded-lg"
+                      : "flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-white rounded-lg hover:text-black hover:bg-white"
+                  }
+                >
+                  <GrHistory className="text-lg"/>
+                  <div className="text-sm">Order History</div>
                 </NavLink>
               </li>
             </ul>

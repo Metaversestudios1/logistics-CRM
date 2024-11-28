@@ -17,6 +17,7 @@ import Warehouses from "./Components/warehouse/Warehouses";
 import EditDealers from "./Components/dealer/EditDealer";
 import AddDealers from "./Components/dealer/AddDealer";
 import Dealers from "./Components/dealer/Dealers";
+import AssigningOrders from "./Components/order/AssigningOrders";
 
 function App() {
   return (
@@ -27,28 +28,20 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/employees" element={<Employees />} />
             <Route path="/employees/addemployee" element={<AddEmployee />} />
-            <Route
-              path="/employees/editemployee/:id"
-              element={<EditEmployee />}
-            />
+            <Route path="/employees/editemployee/:id" element={<EditEmployee />}/>
             <Route path="/products" element={<Product />} />
             <Route path="/products/addproduct" element={<AddProduct />} />
             <Route path="/products/editproduct/:id" element={<EditProduct />} />
             <Route path="/categories" element={<Categories />} />
             <Route path="/categories/addcategory" element={<AddCategory />} />
-            <Route
-              path="/categories/editcategory/:id"
-              element={<EditCategory />}
-            />
-            <Route path="/warehouses" element={<Warehouses />} />
-            <Route path="/warehouses/addwarehouse" element={<AddWarehouse />} />
-            <Route
-              path="/warehouses/editwarehouse/:id"
-              element={<EditWarehouse />}
-            />
+            <Route path="/categories/editcategory/:id" element={<EditCategory />}/>
+            <Route path="/warehouses" element={<Warehouses />}/>
+            <Route path="/warehouses/addwarehouse" element={<AddWarehouse />}/>
+            <Route path="/warehouses/editwarehouse/:id"element={<EditWarehouse />}/>
             <Route path="/dealers" element={<Dealers />} />
             <Route path="/dealers/adddealer" element={<AddDealers />} />
             <Route path="/dealers/editdealer/:id" element={<EditDealers />} />
+            <Route path="/assigningorder" element={<AssigningOrders />} />
           </Routes>
         </Layout>
       </Router>

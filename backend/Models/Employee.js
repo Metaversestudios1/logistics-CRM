@@ -47,8 +47,7 @@ const EmployeeSchema = new mongoose.Schema(
     assignedProducts: [
       {
         orderId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Order",
+          type:String,
         },
         productId: [
           {

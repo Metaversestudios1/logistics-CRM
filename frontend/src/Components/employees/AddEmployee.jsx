@@ -45,15 +45,6 @@ const AddEmployee = () => {
       "Please enter a valid 10-digit phone number."
     );
 
-    // Add custom validation method for experience
-    $.validator.addMethod(
-      "validExperience",
-      function (value, element) {
-        return this.optional(element) || /^\d+(\.\d{1,2})?$/.test(value);
-      },
-      "Please enter a valid experience in years (e.g., 1, 2, 1.2, 1.11)."
-    );
-
     // Initialize jQuery validation
     $("#employeeform").validate({
       rules: {
@@ -77,10 +68,6 @@ const AddEmployee = () => {
         licenseNumber: {
           required: true,
         },
-        experienceYears: {
-          required: true,
-          validExperience: true,
-        },
       },
       messages: {
         name: {
@@ -102,11 +89,6 @@ const AddEmployee = () => {
         },
         licenseNumber: {
           required: "Please enter license number",
-        },
-        experienceYears: {
-          required: "Please enter experience",
-          validExperience:
-            "Please enter a valid experience in years (e.g., 1, 2, 1.2, 1.11).",
         },
       },
       errorElement: "div",
@@ -298,7 +280,7 @@ const AddEmployee = () => {
                   htmlFor="employeeType"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                 >
-                  Employee Type{" "}
+                  Employee Type
                   <span className="text-red-900 text-lg ">&#x2a;</span>
                 </label>
                 <select
@@ -326,7 +308,7 @@ const AddEmployee = () => {
                   htmlFor="licenseNumber"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                 >
-                  License Number{" "}
+                  License Number
                   <span className="text-red-900 text-lg ">&#x2a;</span>
                 </label>
                 <input
@@ -345,7 +327,7 @@ const AddEmployee = () => {
                   htmlFor="experienceYears"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                 >
-                  Experience in Years{" "}
+                  Experience in Years
                 </label>
                 <input
                   name="experienceYears"

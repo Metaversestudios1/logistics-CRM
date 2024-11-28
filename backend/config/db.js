@@ -7,7 +7,8 @@ dotenv.config();
 const connectDB = async () => {
   try {
     // Log the MongoDB URI for debugging
-    const uri = process.env.MONGODB_URI;
+    // const uri = process.env.MONGODB_URI;
+    const uri = "mongodb://localhost:27017/vendorCRM";
     console.log("MongoDB URI:", uri); // Check if URI is loaded correctly
 
     // Ensure the URI is defined

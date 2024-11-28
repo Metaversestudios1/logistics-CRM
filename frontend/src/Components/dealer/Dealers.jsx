@@ -239,7 +239,7 @@ const Dealers = () => {
       </div>
       {noData && (
         <div className="text-center text-xl">
-          Currently! There are no warehouses in the storage.
+          Currently! There are no Dealers in the storage.
         </div>
       )}
 

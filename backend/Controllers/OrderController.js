@@ -4,19 +4,19 @@ const Product = require("../Models/Product");
 
 // Create a new order
 
-const assignProductsToEmployee = async (req, res) => {
+const assignOrderToEmployee = async (req, res) => {
   const {
-    employeeId,
+    assignedTo,
     products,
-    warehouseId,
-    dealerId,
+    warehouse, 
+    dealer,
     pickupDate,
     deliveryDate,
     deliveryAddress
   } = req.body;
   try {
     // Validate Employee
-    const employee = await Employee.findOne({_id:employeeId});
+    const employee = await Employee.findOne({_id:assignedTo});
     if (!employee) {
       return res.status(404).json({ message: "Employee not found" });
     }
@@ -34,9 +34,9 @@ const assignProductsToEmployee = async (req, res) => {
         productId: item.productId,
         quantity: item.quantity,
       })),
-      assignedTo: employeeId,
-      warehouse: warehouseId,
-      dealer: dealerId,
+      assignedTo,
+      warehouse,
+      dealer,
       status: "pending",
       pickupDate,
       deliveryDate,
@@ -47,7 +47,7 @@ const assignProductsToEmployee = async (req, res) => {
 
     // Update Employee's assigned products with order and product details
     const assignedProducts = products.map((item) => ({
-      orderId: savedOrder._id,
+      orderId: savedOrder.orderId,
       productId: item.productId,
       quantity: item.quantity,
       status: "Assigned",
@@ -58,9 +58,8 @@ const assignProductsToEmployee = async (req, res) => {
     await employee.save();
 
     res.status(201).json({
-      message: "Products successfully assigned to employee",
-      order: savedOrder,
-      employee: employee,
+      success: true,
+      message: "Products successfully assigned to employee"
     });
   } catch (error) {
     console.error("Error in assigning products:", error);
@@ -124,5 +123,5 @@ const assignProductsToEmployee = async (req, res) => {
 // };
 
 module.exports = {
-  assignProductsToEmployee,
+  assignOrderToEmployee,
 };
