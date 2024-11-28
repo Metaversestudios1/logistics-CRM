@@ -195,7 +195,7 @@ const Sidebar = ({ sidebar, toggleSideBar }) => {
                   <div className="text-sm">Order assigning</div>
                 </NavLink>
               </li>
-              <li
+              {/*<li
                 className=" hover:scale-105 transition-transform duration-200 "
                 onClick={toggleSideBar}
                 id="users-accordion "
@@ -211,7 +211,7 @@ const Sidebar = ({ sidebar, toggleSideBar }) => {
                   <GrHistory className="text-lg"/>
                   <div className="text-sm">Order History</div>
                 </NavLink>
-              </li>
+              </li>*/}
             </ul>
           </nav>
         </div>
